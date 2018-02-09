@@ -20,7 +20,7 @@
   /* @constructor
    * @public
    */
-  var PerfectRatio = exports.perfectRatio = function(){
+  var PerfectRatio = exports.PR = exports.perfectRatio = function(){
     if (singleton) return singleton
 
     var self = this
@@ -71,6 +71,14 @@
     var ratio = getPerfectRatio(storageKey) || defaultPerfectRatio
     return ratio
   }
+
+  PerfectRatio.prototype.calcInRatio = function(num){
+    var self = this
+      , perfectRatio = self.getPerfectRatio()
+      , currRatio = window.devicePixelRatio
+    return perfectRatio/currRatio * num
+  }
+
 
   PerfectRatio.prototype.addEventListener = function(eventType, f){
     if (!~EVENT_TYPES.indexOf((String(eventType || "").toLowerCase()))){

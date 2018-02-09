@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>PerfectRatio.js</title>
   <script src="./perfectRatio.js"></script>
+  <script src="./perfectRatioUI.js"></script>
 </head>
 <body>
   <input type="button" value="test">
@@ -20,6 +21,8 @@
     pr.addEventListener("ratio-changed", function(evt){
       output.innerText = evt.detail
     })
+
+    var prui = PRUI()
   </script>
 </body>
 </html>
