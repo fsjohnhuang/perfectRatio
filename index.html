@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PerfectRatio.js</title>
+  <script src="./perfectRatio.js"></script>
+</head>
+<body>
+  <input type="button" value="test">
+  <p id="output"></p>
+  <script>
+    var pr = perfectRatio()
+      , btn = document.querySelector("input")
+      , output = document.querySelector("#output")
+    
+    btn.addEventListener("click", function(evt){
+      output.innerText = pr.getRatioStatus()
+    })
+  </script>
+</body>
+</html>
