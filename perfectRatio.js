@@ -1,5 +1,5 @@
 /*!
- * @version 0.1.0
+ * @version 0.2.0
  * @author fsjohnhuang
  * @email fsjohnhuang@hotmail.com
  * @homepage fsjohnhuang.cnblogs.com
@@ -12,16 +12,34 @@
     , ZOOM_IN = 1
     , ZOOM_OUT = 2
 
+  // supported event types
+  var EVENT_TYPES = ["ratio-changed"]
+  // singleton pattern
+  var singleton
+
   /* @constructor
    * @public
    */
   var PerfectRatio = exports.perfectRatio = function(){
-    if (this instanceof PerfectRatio);else return new PerfectRatio()
+    if (singleton) return singleton
 
-    this.defaultPerfectRatio = 1 // default perfect ratio I suppose
-    this.ratios = [1, 1.5, 2]    // perfect ratio maybe
-    this.storageKey = "perfectRatio.perfect_ratio"
+    var self = this
+    if (self instanceof PerfectRatio);else return new PerfectRatio()
+
+    self.defaultPerfectRatio = 1 // default perfect ratio I suppose
+    self.ratios = [1, 1.5, 2]    // perfect ratio maybe
+    self.storageKey = "perfectRatio.perfect_ratio"
+
+    // listen resize event to detect the ratio changing in real time
+    var ratioChangedDetecter = debounce(200, function(){
+      fireRatioChangedEvent(self.getRatioStatus())
+    })
+
+    window.addEventListener("resize", ratioChangedDetecter)
+
+    return (singleton = this)
   }
+
   /* @description get the current ratio status
    * @public
    * @return {PERFECT|ZOOM|ZOOM_IN|ZOOM_OUT}
@@ -54,6 +72,26 @@
     return ratio
   }
 
+  PerfectRatio.prototype.addEventListener = function(eventType, f){
+    if (!~EVENT_TYPES.indexOf((String(eventType || "").toLowerCase()))){
+      throw Error("PR doesn't support event type " + eventType + ".")
+    }
+    document.addEventListener(eventType, f)
+  }
+
+  PerfectRatio.prototype.removeEventListener = function(eventType, f){
+    if (!~EVENT_TYPES.indexOf((String(eventType || "").toLowerCase()))){
+      throw Error("PR doesn't support event type " + eventType + ".")
+    }
+    document.removeEventListener(eventType, f)
+  }
+
+  PerfectRatio.PERFECT = PERFECT
+  PerfectRatio.ZOOM = ZOOM
+  PerfectRatio.ZOOM_IN = ZOOM_IN
+  PerfectRatio.ZOOM_OUT = ZOOM_OUT
+
+
   /* @description get the current ratio status
    * @private
    * @param {Array<Number>} ratios
@@ -75,6 +113,13 @@
     }
     return status
   }
+
+  function fireRatioChangedEvent(status){
+    var evt = document.createEvent("CustomEvent")
+    evt.initCustomEvent("ratio-changed", false, false, status)
+    document.dispatchEvent(evt)
+  }
+
   /* @description Console pane is open or not
    * @private
    * @return {Boolean} - true: open, false: close
@@ -130,10 +175,29 @@
     return innerWidth - outerWidth > -16 // the dVal between outerWidth and innerWidth is 16px in IE11
   }
 
+  /* Utils */
   function savePerfectRatio(key, val){
     localStorage.setItem(key, val)
   }
+
   function getPerfectRatio(key){
     return localStorage.getItem(key)
+  }
+
+  function toArray(arrayLike, startIndex){
+    return Array.prototype.slice.call(arrayLike, startIndex || 0)
+  }
+
+  function debounce(delay, f){
+    var presetArgs = toArray(arguments, 2)
+    var descriptor
+    return function(){
+      clearTimeout(descriptor)
+
+      var args = toArray(arguments)
+      descriptor = setTimeout(function(){
+        f.apply(null, presetArgs.concat(args))
+      }, delay)
+    }
   }
 }(window))
