@@ -3,14 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <title>PerfectRatio.js</title>
-  <script src="./perfectRatio.js"></script>
-  <script src="./perfectRatioUI.js"></script>
+  <script src="./dist/perfectRatio.min.js"></script>
 </head>
 <body>
   <input type="button" value="test">
   <p id="output"></p>
   <script>
-    var pr = perfectRatio()
+    var pr = perfectRatio.pr()
       , btn = document.querySelector("input")
       , output = document.querySelector("#output")
     
@@ -22,7 +21,7 @@
       output.innerText = evt.detail
     })
 
-    var prui = PRUI()
+    pr.detect()
   </script>
 </body>
 </html>

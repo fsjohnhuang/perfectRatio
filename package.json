@@ -1,0 +1,25 @@
+{
+  "name": "perfect-ratio",
+  "version": "0.2.0",
+  "description": "A little standalone lib to detect the ratio of browser~~~!!",
+  "main": "perfectRatio.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fsjohnhuang/perfectRatio.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fsjohnhuang/perfectRatio/issues"
+  },
+  "homepage": "https://github.com/fsjohnhuang/perfectRatio#readme",
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.39",
+    "@babel/preset-env": "^7.0.0-beta.39",
+    "babel-loader": "^8.0.0-beta.0",
+    "webpack": "^3.10.0"
+  }
+}
