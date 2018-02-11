@@ -36,11 +36,6 @@ class PR{
   static get ZOOM_IN(){return ZOOM_IN}
   static get ZOOM_OUT(){return ZOOM_OUT}
 
-  /* @constructor
-   * @param {Number} defaultPR - default perfect ratio
-   * @param {Array<Number>} ratios - supposed perfect ratio
-   * @param {String} storageKey - local storage record key name
-   */
   constructor(defaultPR, ratios, storageKey){
     let self = this
     self.defaultPR = defaultPR // default perfect ratio I suppose
