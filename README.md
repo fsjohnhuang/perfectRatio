@@ -42,16 +42,16 @@ pr.detect()
 
 ### `PR`'s Methods
 #### `PR#getRatioStatus()`
-**@description** Gets the current ratio status
+**@description** Gets the current ratio status<br>
 **@return** `{PERFECT|ZOOM|ZOOM_IN|ZOOM_OUT}`
 
 #### `PR#getPerfectRatio()`
-**@description** Gets the perfect ratio
+**@description** Gets the perfect ratio<br>
 **@return** `{Number}`
 
 #### `PR#calcInRatio(num)`
-**@description** Transforms the input number to what is fit to current ratio
-**@param** `{Number} num` original number
+**@description** Transforms the input number to what is fit to current ratio<br>
+**@param** `{Number} num` original number<br>
 **@return** `{Number}`
 
 #### `PR#addEventListener(eventType, f)`
@@ -60,17 +60,17 @@ pr.detect()
 **@param** `{Number} f` event handler
 
 #### `PR#removeEventListener(eventType, f)`
-**@description** Removes event listener of the specificed event type which is fired by PR instance.
-**@param** `{Number} eventType` specified event type
+**@description** Removes event listener of the specificed event type which is fired by PR instance.<br>
+**@param** `{Number} eventType` specified event type<br>
 **@param** `{Number} f` event handler
 
 #### `PR#detect(delay)`
-**@description** Turns the PR instance to detect the changes of ratio.
+**@description** Turns the PR instance to detect the changes of ratio.<br>
 **@param** `{Number} [delay=50]` delay time of debounce
 
 ### `PR`'s Events
 #### ratio-changed
-**@description** It would be fired when the ratio of user agent changes. CAUTIONS: Canceling and bubbles is not supported to this event type.
+**@description** It would be fired when the ratio of user agent changes. CAUTIONS: Canceling and bubbles is not supported to this event type.<br>
 **Event#detail** `{PERFECT|ZOOM|ZOOM_IN|ZOOM_OUT}`
 
 ## Browser Compatibility
