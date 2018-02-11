@@ -1,5 +1,5 @@
 /*!
- * @version 0.3.0
+ * @version 0.3.1
  * @author fsjohnhuang
  * @email fsjohnhuang@hotmail.com
  * @homepage fsjohnhuang.cnblogs.com

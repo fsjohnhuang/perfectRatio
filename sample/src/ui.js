@@ -64,18 +64,16 @@ function hideTips(mask){
   return () => mask.style.display = "none"
 }
 
-/*function tplChrome(right, fontSize, width, imgWidth, imgHeight, marginTop, text){
+function tplChrome(right, fontSize, width, imgWidth, imgHeight, marginTop, text){
   return `<div style="position:fixed;height:100%;width:100%;background:rgba(0,0,0,0.2);top:0;left:0;">
     <p style="position:fixed;right:${right}px;top:0;font-size:${fontSize}px;width:${width}px;margin-top:${marginTop}px;text-align:right;">
       <img src="./asset/true.png" width="${imgWidth}" height="${imgHeight}" style="float:right;">
       ${text}
     </p>
    </div>`
-}*/
+}
 
-//function tplIE11(right, fontSize, width, imgWidth, imgHeight, marginTop, text){
-//
-function tplChrome(right, fontSize, width, imgWidth, imgHeight, marginTop, text){
+function tplIE11(right, fontSize, width, imgWidth, imgHeight, marginTop, text){
   return `<div style="position:fixed;height:100%;width:100%;background:rgba(0,0,0,0.2);top:0;left:0;">
     <p style="position:fixed;right:${right}px;bottom:0;font-size:${fontSize}px;width:${width}px;margin-top:${marginTop}px;text-align:right;">
       <img src="./asset/true.png" width="${imgWidth}" height="${imgHeight}" style="float:right;transform:rotateX(180deg);position:relative;top:50px;">
@@ -98,8 +96,7 @@ function tpl(text){
   return html
 }
 
-//function updateMaskIE11(mask, right, fontSize, width, imgWidth, imgHeight, marginTop){
-function updateMaskChrome(mask, right, fontSize, width, imgWidth, imgHeight, marginTop){
+function updateMaskIE11(mask, right, fontSize, width, imgWidth, imgHeight, marginTop){
     mask.firstElementChild.style.right = right + "px"
     mask.firstElementChild.style.width = width + "px"
     mask.firstElementChild.style.fontSize = fontSize + "px"
@@ -109,14 +106,14 @@ function updateMaskChrome(mask, right, fontSize, width, imgWidth, imgHeight, mar
     mask.querySelector("img").style.top = pr().calcInRatio(50) + "px"
 }
 
-/*function updateMaskChrome(mask, right, fontSize, width, imgWidth, imgHeight, marginTop){
+function updateMaskChrome(mask, right, fontSize, width, imgWidth, imgHeight, marginTop){
     mask.firstElementChild.style.right = right + "px"
     mask.firstElementChild.style.width = width + "px"
     mask.firstElementChild.style.fontSize = fontSize + "px"
     mask.firstElementChild.style.marginTop = marginTop + "px"
     mask.querySelector("img").width = imgWidth 
     mask.querySelector("img").height = imgHeight
-}*/
+}
 
 function updateMask(mask, right, fontSize, width, imgWidth, imgHeight, marginTop){
   switch(getBrowserInfo()){

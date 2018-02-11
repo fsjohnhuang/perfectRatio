@@ -85,6 +85,10 @@ pr.detect()
   </tr>
 </table>
 
+## Roadmap
+### v0.3.1
+1. Fixs bugs found in IE11.
+
 ## Log
 ### v0.3.0
 1. Change to code by ES6+, and construct the project by webpack2.
