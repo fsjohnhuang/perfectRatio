@@ -33,11 +33,16 @@ export function getFromLocal(key){
 
 export const CHROME = 0
 export const IE11 = 1
+export const EDGE = 2
 
 const rChrome = /Chrome|Chromium/i
+const rEdge = /Edge/i
 export function getBrowserInfo(){
   let ua = navigator.userAgent
-  if (rChrome.test(ua)){
+  if (rEdge.test(ua)){
+    return EDGE
+  }
+  else if (rChrome.test(ua)){
     return CHROME
   }
   else{
@@ -45,3 +50,30 @@ export function getBrowserInfo(){
   }
 }
 
+const isFullscreenImpls = ["fullscreen", "mozFullScreen", "webkitIsFullScreen", "msFullscreenElement"]
+function isFullscreen(){
+  for (var i = 0, l = isFullscreenImpls.length; i < l; i++) {
+    let impl = isFullscreenImpls[i]
+    if (impl in document){
+      return !!document[impl]
+    }
+  }
+}
+
+const onFullscreenchangeImpls = ["onfullscreenchange", "onmozfullscreenchange", "onwebkitfullscreenchange", "onmsfullscreenchange"]
+function onFullscreenchange(f){
+  for (var i = 0, l = onFullscreenchangeImpls.length; i < l; i++) {
+    let impl = onFullscreenchangeImpls[i]
+    if (impl in document){
+      document.addEventListener(impl.replace(/^on/, ""), f)
+      return
+    }
+  }
+}
+let fullscreen = isFullscreen()
+onFullscreenchange(function(){
+  fullscreen = isFullscreen()
+})
+export function getFullscreen(){
+  return fullscreen
+}

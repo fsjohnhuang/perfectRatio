@@ -1,11 +1,17 @@
 /*!
- * @version 0.3.1
+ * @version 0.4.0
  * @author fsjohnhuang
  * @email fsjohnhuang@hotmail.com
  * @homepage fsjohnhuang.cnblogs.com
  * @license MIT
  */
-import {debounce, saveToLocal, getFromLocal, on} from "./utils"
+import {debounce, saveToLocal, getFromLocal, on
+       , getBrowserInfo, CHROME, EDGE, IE11
+       , getFullscreen} from "./utils"
+import * as ie11r1 from "./ie11r1"
+import * as ie11r2 from "./ie11r2"
+import * as chromer1 from "./chromer1"
+import * as chromer2 from "./chromer2"
 
 // the status of scaling
 export const PERFECT = -1
@@ -16,7 +22,7 @@ export const ZOOM_OUT = 2
 // supported event types
 const EVENT_TYPES = ["ratio-changed"]
     , DEFAULT_PR = 1
-    , RATIOS = [1, 1.5, 2]
+    , RATIOS = [1, 2]
     , STORAGE_KEY = "perfectRatio.perfect_ratio"
 
 // singleton pattern
@@ -138,9 +144,9 @@ function getRatioStatus(ratios
     status = isPerfectInConsole(ratios, currRatio, outerWidth, innerWidth, outerHeight, innerHeight) ? PERFECT : ZOOM
   }
   else{
-    status = isPerfectInView(ratios, outerWidth, innerWidth, currRatio)
+    status = isPerfectInView(ratios, outerWidth, innerWidth, outerHeight, innerHeight, currRatio)
              ? PERFECT
-             : isZoomIn(outerWidth, innerWidth) ? ZOOM_IN : ZOOM_OUT
+             : isZoomIn(outerWidth, innerWidth, currRatio) ? ZOOM_IN : ZOOM_OUT
   }
   return status
 }
@@ -171,9 +177,27 @@ function isConsoling(){
  * @param {Number} ratio - current ratio
  * @return {Boolean}
  */
-function isPerfectInView(ratios, outerWidth, innerWidth, ratio){
-  return Math.abs(outerWidth - innerWidth) < 17 // the dVal between outerWidth and innerWidth is 16px in IE11
-         && !!~ratios.indexOf(ratio)
+function isPerfectInView(ratios, outerWidth, innerWidth, outerHeight, innerHeight, ratio){
+  if (!!~ratios.indexOf(ratio)){
+    switch (getBrowserInfo()) {
+      case CHROME:
+        return getFullscreen()
+          ? (ratio == 1 ? chromer1.isPerfectInViewFullscreen(outerHeight-innerHeight)
+                        : chromer2.isPerfectInViewFullscreen(outerHeight-innerHeight))
+          : (ratio == 1 ? chromer1.isPerfectInView(outerWidth-innerWidth)
+                        : chromer2.isPerfectInView(outerWidth-innerWidth))
+      case IE11:
+        return getFullscreen()
+          ? (ratio == 1 ? ie11r1.isPerfectInViewFullscreen(outerHeight-innerHeight)
+                        : ie11r2.isPerfectInViewFullscreen(outerWidth-innerWidth, outerHeight-innerHeight))
+          : (ratio == 1 ? ie11r1.isPerfectInView(outerWidth-innerWidth)
+                        : ie11r2.isPerfectInView(outerWidth-innerWidth))
+      case EDGE:
+        // TODO in v0.4.1
+        break;
+    }
+  }
+  return false
 }
 
 /* @description Ratio is perfect or not with opening Console pane
@@ -183,9 +207,26 @@ function isPerfectInView(ratios, outerWidth, innerWidth, ratio){
  * @return {Boolean}
  */
 function isPerfectInConsole(ratios, ratio, outerWidth, innerWidth, outerHeight, innerHeight){
-  let dW = Math.abs(outerWidth - innerWidth)
-    , dH = Math.abs(outerHeight - innerHeight)
-  return !!~ratios.indexOf(ratio) && (dW < 17 || dH < 17)
+  if (!!~ratios.indexOf(ratio)){
+    switch (getBrowserInfo()) {
+      case CHROME:
+        return getFullscreen()
+          ? (ratio == 1 ? chromer1.isPerfectInConsoleFullscreen(outerWidth-innerWidth, outerHeight-innerHeight)
+                        : chromer2.isPerfectInConsoleFullscreen(outerWidth-innerWidth, outerHeight-innerHeight))
+          : (ratio == 1 ? chromer1.isPerfectInConsole(outerWidth-innerWidth, outerHeight-innerHeight)
+                        : chromer2.isPerfectInConsole(outerWidth-innerWidth, outerHeight-innerHeight))
+      case IE11:
+        return getFullscreen()
+          ? (ratio == 1 ? ie11r1.isPerfectInConsoleFullscreen(outerWidth-innerWidth, outerHeight-innerHeight)
+                        : ie11r2.isPerfectInConsoleFullscreen(outerWidth-innerWidth, outerHeight-innerHeight))
+          : (ratio == 1 ? ie11r1.isPerfectInConsole(outerWidth-innerWidth, outerHeight-innerHeight)
+                        : ie11r2.isPerfectInConsole(outerWidth-innerWidth, outerHeight-innerHeight))
+      case EDGE:
+        // TODO in v0.4.1
+        break;
+    }
+  }
+  return false
 }
 
 /* @description Zoom in or not
@@ -194,8 +235,18 @@ function isPerfectInConsole(ratios, ratio, outerWidth, innerWidth, outerHeight, 
  * @param {Number} innerWidth - window.innerWidth
  * @return {Boolean}
  */
-function isZoomIn(outerWidth, innerWidth){
-  return outerWidth - innerWidth > 16 // the dVal between outerWidth and innerWidth is 16px in IE11
+function isZoomIn(outerWidth, innerWidth, ratio){
+  switch (getBrowserInfo()) {
+    case CHROME:
+      return ratio == 1 ? chromer1.isZoomInInView(outerWidth-innerWidth)
+                        : chromer2.isZoomInInView(outerWidth-innerWidth)
+    case IE11:
+      return ratio == 1 ? ie11r1.isZoomInInView(outerWidth-innerWidth)
+                        : ie11r2.isZoomInInView(outerWidth-innerWidth)
+    case EDGE:
+      // TODO in v0.4.1
+      break;
+  }
 }
 
 /* @description Zoom out or not
@@ -204,6 +255,16 @@ function isZoomIn(outerWidth, innerWidth){
  * @param {Number} innerWidth - window.innerWidth
  * @return {Boolean}
  */
-function isZoomOut(outerWidth, innerWidth){
-  return innerWidth - outerWidth > -16 // the dVal between outerWidth and innerWidth is 16px in IE11
+function isZoomOut(outerWidth, innerWidth, ratio){
+  switch (getBrowserInfo()) {
+    case CHROME:
+      return ratio == 1 ? chromer1.isZoomOutInView(outerWidth-innerWidth)
+                        : chromer2.isZoomOutInView(outerWidth-innerWidth)
+    case IE11:
+      return ratio == 1 ? ie11r1.isZoomOutInView(outerWidth-innerWidth)
+                        : ie11r2.isZoomOutInView(outerWidth-innerWidth)
+    case EDGE:
+      // TODO in v0.4.1
+      break;
+  }
 }

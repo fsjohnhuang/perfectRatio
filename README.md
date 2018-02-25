@@ -3,7 +3,7 @@ A little standalone library to detect the scaling of browser which is helpful to
 
 ## Usage
 ```
-var pr = perfecRatio.pr()
+var pr = perfectRatio.pr()
 pr.addEventListener("ratio-changed"
   , evt => {
     switch(evt.detail){

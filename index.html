@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PerfectRatio.js</title>
+  <script src="./dist/perfectRatio.min.js"></script>
+</head>
+<body>
+  <div id="ratio"></div>
+  <script>
+  var el = document.querySelector("#ratio")
+  var pr = perfectRatio.pr()
+  pr.addEventListener("ratio-changed"
+    , function(evt) {
+      el.textContent = evt.detail
+    })
+  // start to detect the changes of ratio
+  pr.detect()
+  </script>
+</body>
+</html>
