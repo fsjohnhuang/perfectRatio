@@ -5,8 +5,8 @@
  * @homepage fsjohnhuang.cnblogs.com
  * @license MIT
  */
-import {partial, getBrowserInfo, CHROME, IE11} from "../lib/pr@v0.3.0/utils"
-import {pr, PERFECT, ZOOM, ZOOM_IN, ZOOM_OUT} from "../lib/pr@v0.3.0/perfectRatio"
+import {partial, getBrowserInfo, CHROME, IE11} from "../lib/pr@v0.4.0/utils"
+import {pr, PERFECT, ZOOM, ZOOM_IN, ZOOM_OUT} from "../lib/pr@v0.4.0/perfectRatio"
 
 const RIGHT = 60
     , FONT_SIZE = 40
